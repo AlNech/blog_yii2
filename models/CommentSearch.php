@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Post;
+use app\models\Comment;
 
 /**
- * PostSearch represents the model behind the search form of `app\models\Post`.
+ * CommentSearch represents the model behind the search form of `app\models\Comment`.
  */
-class PostSearch extends Post
+class CommentSearch extends Comment
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class PostSearch extends Post
     public function rules()
     {
         return [
-            [['id', 'status', 'create_time', 'update_time', 'author_id'], 'integer'],
-            [['title', 'content', 'tags'], 'safe'],
+            [['id', 'status', 'create_time', 'post_id'], 'integer'],
+            [['content', 'author', 'email', 'url'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class PostSearch extends Post
      */
     public function search($params)
     {
-        $query = Post::find();
+        $query = Comment::find();
 
         // add conditions that should always apply here
 
@@ -61,13 +61,13 @@ class PostSearch extends Post
             'id' => $this->id,
             'status' => $this->status,
             'create_time' => $this->create_time,
-            'update_time' => $this->update_time,
-            'author_id' => $this->author_id,
+            'post_id' => $this->post_id,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'tags', $this->tags]);
+        $query->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'author', $this->author])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'url', $this->url]);
 
         return $dataProvider;
     }

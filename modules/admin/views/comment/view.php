@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\models\Post $model */
+/** @var app\models\Comment $model */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="post-view">
+<div class="comment-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,13 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'title',
             'content:ntext',
-            'tags:ntext',
             'status',
             'create_time:datetime',
-            'update_time:datetime',
-            'author_id',
+            'author',
+            'email:email',
+            'url:url',
+            'post_id',
         ],
     ]) ?>
 
