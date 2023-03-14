@@ -22,6 +22,19 @@ class m230304_135719_create_comment_table extends Migration
             'url' => $this->string(128),
             'post_id' => $this->integer()->notNull(),
         ],'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci');
+
+
+        $this->addForeignKey
+        (
+            'post_id',
+            'comment',
+            'post_id',
+            'post',
+            'id',
+            'CASCADE'
+        );
+
+
     }
 
     /**

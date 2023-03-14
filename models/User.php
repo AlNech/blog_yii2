@@ -12,6 +12,7 @@ use Yii;
  * @property string|null $email
  * @property string|null $password
  * @property int|null $isAdmin
+ * @property string|null $authKey
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -30,7 +31,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             [['isAdmin'], 'integer'],
-            [['name', 'email', 'password'], 'string', 'max' => 255],
+            [['name', 'email', 'password', 'authKey'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,6 +46,7 @@ class User extends \yii\db\ActiveRecord
             'email' => 'Email',
             'password' => 'Password',
             'isAdmin' => 'Is Admin',
+            'authKey' => 'Auth Key',
         ];
     }
 }
