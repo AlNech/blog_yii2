@@ -32,18 +32,18 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             'timestamp' => [
-            'class' => TimestampBehavior::className(),
-            'attributes' => [
-                ActiveRecord::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
-                ActiveRecord::EVENT_BEFORE_UPDATE => ['update_time'],
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['update_time'],
+                ],
             ],
-        ],
-            [
-                'class' => BlameableBehavior::className(),
-                'createdByAttribute' => 'author_id',
-                'updatedByAttribute' => 'author_id',
-            ],
-        ];
+                [
+                    'class' => BlameableBehavior::className(),
+                    'createdByAttribute' => 'author_id',
+                    'updatedByAttribute' => 'author_id',
+                ],
+            ];
     }
 
     public static function tableName()
@@ -67,16 +67,16 @@ class Post extends \yii\db\ActiveRecord
             }],
         ];
     }
-
+    public function getAuthor()
+    {
+        return $this->hasOne(User::class, ['id' => 'author_id']);
+    }
     public function getUrl()
     {
         return Yii::$app->urlManager->createUrl([ 'post/view',
             'id'=>$this->id,
             'title'=>$this->title]);
     }
-    /**
-     * {@inheritdoc}
-     */
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['post_id' => 'id'])
@@ -95,50 +95,18 @@ class Post extends \yii\db\ActiveRecord
         return $this->hasMany(Comment::className(),
             ['post_id' => 'id'])->where(['status'=>Comment::STATUS_APPROVED])->count();
     }
-    public static function items($type)
-    {
-        if(!isset(self::$_items[$type]))
-            self::loadItems($type);
-        return self::$_items[$type];
-    }
 
-    public static function item($type,$code)
-    {
-        if(!isset(self::$_items[$type]))
-            self::loadItems($type);
-        return isset(self::$_items[$type][$code]) ? self::$_items[$type][$code] : false;
-    }
-
-    private static function loadItems($type)
-    {
-        self::$_items[$type]=[];
-        $models=self::find()->where(['type'=>$type])->orderBy('position')->all();
-        foreach ($models as $model)
-            self::$_items[$type][$model->code]=$model->name;
-    }
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-        Tag::updateFrequency($this->_oldTags, $this->tags);
-
-    }
-
-    public function afterFind()
-    {
-        parent::afterFind();
-        $this->_oldTags=$this->tags;
-    }
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'content' => 'Content',
-            'tags' => 'Tags',
-            'status' => 'Status',
-            'create_time' => 'Create Time',
-            'update_time' => 'Update Time',
-            'author_id' => 'Author ID',
+            'title' => 'Заголовок',
+            'content' => 'Содержание',
+            'tags' => 'Тэг',
+            'status' => 'Статус',
+            'create_time' => 'Дата создания',
+            'update_time' => 'Дата обновления',
+            'author_id' => 'Автор',
         ];
     }
 }

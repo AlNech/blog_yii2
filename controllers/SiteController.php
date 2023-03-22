@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Post;
 use app\models\RegistrationForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -21,20 +22,27 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['login', 'logout', 'registration'],
                 'rules' => [
                     [
                         'allow' => true,
+                        'actions' => ['login', 'registration'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
                         'roles' => ['@'],
                     ],
-                ],
             ],
+                ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
-            ],
-        ];
+            ],];
+
     }
 
     /**
@@ -60,7 +68,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $posts = Post::find()->andWhere(['status'=>0])->all();
+        return $this->render('index', ['posts'=>$posts]);
     }
 
     /**
