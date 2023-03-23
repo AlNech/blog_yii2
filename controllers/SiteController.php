@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Post;
+use app\models\Comment;
 use app\models\RegistrationForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -68,7 +69,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $posts = Post::find()->andWhere(['status'=>0])->all();
+        $posts = Post::find()->andWhere(['status'=>1])->all();
         return $this->render('index', ['posts'=>$posts]);
     }
 

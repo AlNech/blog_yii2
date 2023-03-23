@@ -22,6 +22,7 @@ use yii\behaviors\BlameableBehavior;
  */
 class Post extends \yii\db\ActiveRecord
 {
+
     const STATUS_DRAFT=1;
     const STATUS_PUBLISHED=2;
     const STATUS_ARCHIVED=3;
@@ -95,6 +96,7 @@ class Post extends \yii\db\ActiveRecord
         return $this->hasMany(Comment::className(),
             ['post_id' => 'id'])->where(['status'=>Comment::STATUS_APPROVED])->count();
     }
+
 
     public function attributeLabels()
     {

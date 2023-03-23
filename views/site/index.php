@@ -20,8 +20,13 @@ $this->title = 'My Yii Application';
 
                 <p><?=$one->content;?></p>
                 <p><?=$one->author->name?></p>
-            </div>
+
+
+
+
             <?php endforeach;?>
+
+
         </div>
 
     </div>
