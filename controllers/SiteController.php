@@ -70,6 +70,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $posts = Post::find()->andWhere(['status'=>1])->all();
+
         return $this->render('index', ['posts'=>$posts]);
     }
 

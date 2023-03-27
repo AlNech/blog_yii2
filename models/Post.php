@@ -96,7 +96,13 @@ class Post extends \yii\db\ActiveRecord
         return $this->hasMany(Comment::className(),
             ['post_id' => 'id'])->where(['status'=>Comment::STATUS_APPROVED])->count();
     }
+    public function addComment($comment)
+    {
 
+        $comment->status=Comment::STATUS_APPROVED;
+        $comment->post_id=$this->id;
+        return $comment->save();
+    }
 
     public function attributeLabels()
     {

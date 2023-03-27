@@ -12,22 +12,5 @@ $this->title = 'My Yii Application';
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 
-    <div class="body-content">
-        <div class="row">
-            <?php foreach ($posts as $one):?>
-            <div class="col-lg-4">
-                <h2><?=$one->title?></h2>
 
-                <p><?=$one->content;?></p>
-                <p><?=$one->author->name?></p>
-
-
-
-
-            <?php endforeach;?>
-
-
-        </div>
-
-    </div>
 </div>

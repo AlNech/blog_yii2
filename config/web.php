@@ -48,6 +48,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'blog/<id>'=>'blog/one',
+                'blog'=>'blog/index'
             ],
         ],
         

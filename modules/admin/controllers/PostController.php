@@ -62,51 +62,10 @@ class PostController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
-        $post=$this->loadModel();
-        $comment=$this->newComment($post);
-
-        return $this->render('view',array(
-            'model'=>$post,
-            'comment'=>$comment,
-        ));
-    }
 
 
-    public function loadModel()
-    {
-        if($this->_model===null)
-        {
-            if(isset($_GET['id']))
-            {
-                if(Yii::app()->user->isGuest)
-                    $condition='status='.Post::STATUS_PUBLISHED.' OR status='.Post::STATUS_ARCHIVED;
-                else
-                    $condition='';
-                $this->_model=Post::model()->findByPk($_GET['id'], $condition);
-            }
-            if($this->_model===null)
-                throw new CHttpException(404,'The requested page does not exist.');
-        }
-        return $this->_model;
-    }
-    protected function newComment($post)
-    {
-        $comment=new Comment;
-        if(isset($_POST['Comment']))
-        {
-            $comment->attributes=$_POST['Comment'];
-            if($post->addComment($comment))
-            {
-                if($comment->status==Comment::STATUS_PENDING)
-                    Yii::app()->user->setFlash('commentSubmitted','Thank you for your comment.
-                Your comment will be posted once it is approved.');
-                $this->refresh();
-            }
-        }
-        return $comment;
-    }
+
+
     /**
      * Creates a new Post model.
      * If creation is successful, the browser will be redirected to the 'view' page.

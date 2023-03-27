@@ -3,6 +3,11 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\AttributeBehavior;
+use yii\behaviors\SluggableBehavior;
+use yii\db\ActiveRecord;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "comment".
@@ -51,7 +56,10 @@ class Comment extends \yii\db\ActiveRecord
             [['status', 'create_time', 'post_id'], 'integer'],
         ];
     }
-
+    public function getUrl()
+    {
+        return $this->url;
+    }
     /**
      * {@inheritdoc}
      */
