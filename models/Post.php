@@ -98,11 +98,11 @@ class Post extends \yii\db\ActiveRecord
     }
     public function addComment($comment)
     {
-
         $comment->status=Comment::STATUS_APPROVED;
         $comment->post_id=$this->id;
         return $comment->save();
     }
+
 
     public function attributeLabels()
     {

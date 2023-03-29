@@ -16,6 +16,17 @@ class CommentController extends Controller
     /**
      * @inheritDoc
      */
+    public function actionApprove()
+    {
+        if(Yii::app()->request->isPostRequest)
+        {
+            $comment=$this->loadModel();
+            $comment->approve();
+            $this->redirect(array('index'));
+        }
+        else
+            throw new CHttpException(400,'Invalid request...');
+    }
     public function behaviors()
     {
         return array_merge(

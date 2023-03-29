@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Post;
 use app\models\Comment;
+use app\models\User;
 use app\models\RegistrationForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -16,10 +17,10 @@ use app\models\ContactForm;
 
 class BlogController extends Controller
 {
+
     public function actionIndex()
     {
-        $posts = Post::find()->andWhere(['status'=>1])->all();
-
+        $posts = Post::find()->andWhere(['status'=>2])->all();
         return $this->render('all', ['posts'=>$posts]);
     }
     public function actionOne($id)

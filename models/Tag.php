@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\Post;
+use yii\data\ActiveDataProvider;
 /**
  * This is the model class for table "tag".
  *
@@ -16,6 +17,24 @@ class Tag extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function getTagPosts(): ActiveQuery
+    {
+        return $this->hasMany(Tag::class, ['tag_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function getPublishedPosts(): ActiveDataProvider
+    {
+        return new ActiveDataProvider([
+            'query' => $this->getTagPosts()
+                ->alias('tp')
+                ->leftJoin(Post::tableName() . ' p', 'p.id = tp.post_id')
+                ->where(['publish_status' => Post::STATUS_PUBLISHED])
+                ->orderBy(['publish_date' => SORT_DESC])
+        ]);
+    }
 
     public static function string2array($tags)
     {

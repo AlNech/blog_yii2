@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Post;
 use app\models\Comment;
 use app\models\RegistrationForm;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -69,9 +70,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $posts = Post::find()->andWhere(['status'=>1])->all();
+        $model = User::find()->where(['name' => 'admin'])->one();
+        if (empty($model)) {
+            $user = new User();
+            $user->name = 'admin';
+            $user->isAdmin = 1;
+            $user->email = 'admin@yoursite.ru';
+            $user->HashPassword('admin');
+            if ($user->save()) {
+                echo 'good';
+            }
+        }
 
-        return $this->render('index', ['posts'=>$posts]);
+        return $this->render('index');
     }
 
     /**

@@ -56,6 +56,18 @@ class Comment extends \yii\db\ActiveRecord
             [['status', 'create_time', 'post_id'], 'integer'],
         ];
     }
+    public static function findRecentComments($limit=3)
+    {
+        return static::find()->where('status='.self::STATUS_APPROVED)
+            ->orderBy('create_time DESC')
+            ->limit($limit)
+            ->with('post')->all();
+    }
+    public function approve()
+    {
+        $this->status=Comment::STATUS_APPROVED;
+        $this->update(array('status'));
+    }
     public function getUrl()
     {
         return $this->url;

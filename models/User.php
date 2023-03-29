@@ -16,6 +16,7 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +35,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['name', 'email', 'password', 'authKey'], 'string', 'max' => 255],
         ];
     }
+
     /**
      * Finds an identity by the given ID.
      *
