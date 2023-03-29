@@ -22,7 +22,7 @@ use yii\behaviors\BlameableBehavior;
  */
 class Post extends \yii\db\ActiveRecord
 {
-
+    private $_oldTags;
     const STATUS_DRAFT=1;
     const STATUS_PUBLISHED=2;
     const STATUS_ARCHIVED=3;
@@ -102,9 +102,39 @@ class Post extends \yii\db\ActiveRecord
         $comment->post_id=$this->id;
         return $comment->save();
     }
+    public function normalizeTags($attribute,$params)
+    {
+        $this->tags = Tag::array2string(array_unique(array_map('trim', Tag::string2array($this->tags))));
+    }
+
+    public function getPostTags()
+    {
+        return $this->hasMany(PostTag::className(), ['post_id' => 'id']);
+    }
+    public function getTagLinks()
+    {
+        $links = [];
+        foreach(Tag::string2array($this->tags) as $tag)
+            $links[] = Html::a($tag, Yii::$app->getUrlManager()->createUrl(['blog/all', 'tag'=>$tag]));
+
+        return $links;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->_oldTags = $this->tags;
+    }
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        // add your code here
+        Tag::updateFrequency($this->_oldTags, $this->tags);
+    }
 
 
-    public function attributeLabels()
+
+        public function attributeLabels()
     {
         return [
             'id' => 'ID',

@@ -3,7 +3,7 @@ use \yii\helpers\Html;
 ?>
 <div>
 
-    <h1><?php echo Html::a(Html::encode($post->title), $post->url); ?></h1>
+    <h1><?php echo $post->title ?></h1>
 
     <p class="meta">Posted by <?php echo $post->author->name . ' on ' . date('F j, Y',$post->create_time); ?></p>
     <p class='lead'>

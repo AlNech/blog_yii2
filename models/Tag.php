@@ -17,38 +17,72 @@ class Tag extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function getTagPosts(): ActiveQuery
-    {
-        return $this->hasMany(Tag::class, ['tag_id' => 'id']);
-    }
 
-    /**
-     * @return ActiveDataProvider
-     */
-    public function getPublishedPosts(): ActiveDataProvider
-    {
-        return new ActiveDataProvider([
-            'query' => $this->getTagPosts()
-                ->alias('tp')
-                ->leftJoin(Post::tableName() . ' p', 'p.id = tp.post_id')
-                ->where(['publish_status' => Post::STATUS_PUBLISHED])
-                ->orderBy(['publish_date' => SORT_DESC])
-        ]);
-    }
 
+    public static function findTagWeights($limit=20)
+    {
+        $models = Tag::find()->orderBy(['frequency' => SORT_DESC])->all();
+
+        $total = 0;
+        foreach($models as $model)
+            $total += $model->frequency;
+
+        $tags = [];
+        if($total>0)
+        {
+            foreach($models as $model)
+                $tags[$model->name] = 8 + (int)(16*$model->frequency/($total+10));
+            ksort($tags);
+        }
+        return $tags;
+    }
     public static function string2array($tags)
     {
-        return preg_split('/\s*,\s*/',trim($tags),-1,PREG_SPLIT_NO_EMPTY);
+        return preg_split('/\s*,\s*/',trim((string)$tags),-1,PREG_SPLIT_NO_EMPTY);
     }
 
     public static function array2string($tags)
     {
-        return implode(', ',$tags);
+        return implode(',',$tags);
     }
     public static function tableName()
     {
         return 'tag';
     }
+    public static function updateFrequency($oldTags, $newTags)
+    {
+        $oldTags = self::string2array($oldTags);
+        $newTags = self::string2array($newTags);
+        self::addTags(array_values(array_diff($newTags, $oldTags)));
+        self::removeTags(array_values(array_diff($oldTags, $newTags)));
+    }
+
+    public static function addTags($tags)
+    {
+        Tag::updateAllCounters(['frequency' => 1], 'name in ("' . implode ( '"," ', $tags) . '")');
+
+        foreach($tags as $name)
+        {
+            if(!Tag::findOne(['name' => $name,]))
+            {
+                $tag = new Tag;
+                $tag->name = $name;
+                $tag->frequency = 1;
+                $tag->save();
+            }
+        }
+    }
+
+    public static function removeTags($tags)
+    {
+        if(empty($tags))
+            return;
+
+        Tag::updateAllCounters(['frequency' => 1], 'name in ("' . implode ( '"," ', $tags) . '")');
+        Tag::deleteAll('frequency <= 0');
+    }
+
+
 
     /**
      * {@inheritdoc}

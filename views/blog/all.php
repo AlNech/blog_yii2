@@ -1,13 +1,17 @@
 <?php
-use \yii\helpers\Html;
-    /* @var $this \yii\web\View */
+
+use app\widgets\TagCloud;
+use yii\helpers\Html;
+
+/* @var $this \yii\web\View */
     /* @var $posts \app\models\Post */
 ?>
 
 <div class="body-content">
-    <?php $this->widget('TagCloud', array(
-        'maxTags'=>Yii::app()->params['tagCloudCount'],
-    )); ?>
+    <?= TagCloud::widget([
+        'title' => '<i class="icon-st"></i>',
+        'maxTags' => 5,
+    ]) ?>
     <?php foreach ($posts as $one):?>
     <div class="col-lg-12">
         <h2><?=$one->title?></h2>

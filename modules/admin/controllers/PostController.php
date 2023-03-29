@@ -87,7 +87,26 @@ class PostController extends Controller
             'model' => $model,
         ]);
     }
+    public function actionSetTags($id) {
 
+        $post = $this->findModel($id);
+
+        $selectedTags = $post->getSelectedTags();
+        $tags = ArrayHelper::map(Tag::find()->asArray()->all(), 'id', 'name');
+
+        if (\Yii::$app->request->isPost) {
+
+            $tags = Yii::$app->request->post('tags');
+            $post->saveTags($tags);
+
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
+        return $this->render('tags', [
+            'selectedTags' => $selectedTags,
+            'tags' => $tags,
+        ]);
+    }
     /**
      * Updates an existing Post model.
      * If update is successful, the browser will be redirected to the 'view' page.
