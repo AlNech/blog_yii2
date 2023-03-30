@@ -52,7 +52,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'blog/<id>'=>'blog/one',
-                'blog'=>'blog/index'
+                'blog'=>'blog/index',
+                'post/<tag:.*?>'=>'post/index',
+                '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
             ],
         ],
         

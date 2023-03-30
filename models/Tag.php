@@ -36,6 +36,11 @@ class Tag extends \yii\db\ActiveRecord
         }
         return $tags;
     }
+    public static function updateFrequencyOnDelete($oldTags)
+    {
+        $oldTags = self::string2array($oldTags);
+        self::removeTags($oldTags);
+    }
     public static function string2array($tags)
     {
         return preg_split('/\s*,\s*/',trim((string)$tags),-1,PREG_SPLIT_NO_EMPTY);
