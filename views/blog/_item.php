@@ -11,13 +11,14 @@ use \yii\helpers\Html;
         echo $post->content;
         ?>
     <p>
-    <div>
+    <div class="mb-5">
         <p>
             <strong>Tags:</strong>
             <?php echo  $post->tags; ?>
         </p>
-        <?php echo Html::a('Permalink', $post->url); ?> |
-        <?php echo Html::a("Comments ({$post->commentCount})",$post->url.'#comments'); ?> |
+
+
+        <?php echo Html::label("Comments ({$post->commentCount})",$post->url.'#comments'); ?> |
         Last updated on <?php echo date('F j, Y',$post->update_time); ?>
     </div>
 </div>

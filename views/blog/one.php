@@ -18,9 +18,9 @@ use yii\widgets\DetailView;
         <div id="comments" class="row-fluid">
             <?php
             if($post->commentCount>=1): ?>
-                <h4>
+                <h5>
                     <?php echo $post->commentCount>1 ? $post->commentCount . ' comments' : 'One comment'; ?>
-                </h4>
+                </h5>
 
                 <?php echo $this->context->renderPartial('_comments',array(
                     'post'=>$post,

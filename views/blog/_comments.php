@@ -3,23 +3,28 @@ use \yii\helpers\Html;
 foreach($comments as $comment): ?>
     <div class="well" id="c<?php echo $comment->id; ?>">
         <div class="row">
-            <div class="col-md-8">
-                <h4><?php echo $comment->url; ?> says:</h4>
+            <div class="col-md-7 border border-success">
+                <strong class="h5"><?php echo $comment->author; ?>
+                    <span >
+                        <?php echo Html::a("link #{$comment->id}", $comment->getUrl(),[
+                            'class'=>'cid',
+                            'title'=>'Permalink to this comment!',
+                        ]); ?>
+
+                    </span>
+                </strong>
+
+                <p ><?php echo date('F j, Y \a\t h:i a',$comment->create_time); echo '   '. $comment->email;?> </p>
+                <hr style="margin:2px 0px;">
+                <p class='lead'>
+                    <?php echo nl2br(Html::encode($comment->content)); ?>
+                </p>
             </div>
-            <div class="col-md-4 text-right">
-                <?php echo Html::a("#{$comment->id}", $comment->getUrl(),[
-                    'class'=>'cid',
-                    'title'=>'Permalink to this comment!',
-                ]);
-                ?>
-            </div>
+
         </div>
-        <hr style="margin:2px 0px;">
-        <p class='lead'>
-            <?php echo nl2br(Html::encode($comment->content)); ?>
-        </p>
+
         <h5>
-            <?php echo date('F j, Y \a\t h:i a',$comment->create_time); ?>
+
         </h5>
     </div><!-- comment -->
 <?php endforeach; ?>

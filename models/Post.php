@@ -107,18 +107,7 @@ class Post extends \yii\db\ActiveRecord
         $this->tags = Tag::array2string(array_unique(array_map('trim', Tag::string2array($this->tags))));
     }
 
-    public function getPostTags()
-    {
-        return $this->hasMany(PostTag::className(), ['post_id' => 'id']);
-    }
-    public function getTagLinks()
-    {
-        $links = [];
-        foreach(Tag::string2array($this->tags) as $tag)
-            $links[] = Html::a($tag, Yii::$app->getUrlManager()->createUrl(['blog/all', 'tag'=>$tag]));
 
-        return $links;
-    }
 
     public function afterFind()
     {

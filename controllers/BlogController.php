@@ -20,6 +20,7 @@ class BlogController extends Controller
 
     public function actionIndex()
     {
+
         $posts = Post::find()->andWhere(['status'=>2])->all();
         return $this->render('all', ['posts'=>$posts]);
     }

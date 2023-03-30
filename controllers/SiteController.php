@@ -77,9 +77,6 @@ class SiteController extends Controller
             $user->isAdmin = 1;
             $user->email = 'admin@yoursite.ru';
             $user->HashPassword('admin');
-            if ($user->save()) {
-                echo 'good';
-            }
         }
 
         return $this->render('index');

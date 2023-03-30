@@ -3,9 +3,9 @@ use \yii\helpers\Html;
 use \yii\widgets\ActiveForm;
 ?>
 
-<div class="panel panel-success">
+<div class="col-md-8 ">
     <div class="panel-heading">
-        <h3 class="panel-title">Leave a Comment</h3>
+        <h5 class="panel-title">Leave a Comment</h5>
     </div>
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
@@ -13,7 +13,7 @@ use \yii\widgets\ActiveForm;
         <?php echo $form->field($comment,'email')->textInput(); ?>
         <?php echo $form->field($comment,'url')->textInput(); ?>
         <?php echo $form->field($comment,'content')->textArea(array('rows'=>6, 'cols'=>50)); ?>
-        <div class="form-actions text-center">
+        <div class="form-actions text-center mt-3">
             <?php echo Html::submitButton('Save',['class' => 'btn btn-success btn-block']); ?>
         </div>
 
