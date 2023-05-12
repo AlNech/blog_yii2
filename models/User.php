@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\web\IdentityInterface;
+
 /**
  * This is the model class for table "user".
  *
@@ -46,10 +47,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return User::findOne($id);
     }
+
     public static function findByUsername(string $name)
     {
         return static::findOne(['name' => $name]);
     }
+
     /**
      * Finds an identity by the given token.
      *
@@ -85,14 +88,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->getAuthKey() === $authKey;
     }
+
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
     }
+
     public function HashPassword($password)
     {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
+
     /**
      * {@inheritdoc}
      */

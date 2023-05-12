@@ -19,7 +19,7 @@ use app\models\Lookup;
 
     <?= $form->field($model, 'tags')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(Lookup::items('PostStatus'),['prompt'=>'Select...']) ?>
+    <?= $form->field($model, 'status')->dropDownList(Lookup::items('PostStatus'), ['prompt' => 'Select...']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -34,7 +34,7 @@ class TagCloud extends Widget
         }
 
         return $this->render('//blog/portal', [
-            'title' =>$this->title,
+            'title' => $this->title,
             'content' => $str,
         ]);
     }

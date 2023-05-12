@@ -18,14 +18,13 @@ class RegistrationForm extends Model
             [['name'], 'string'],
             [['email'], 'email'],
             [['email'], 'unique', 'targetClass' => 'app\models\User', 'message' => 'Такой пользователь уже существует!'],
-            ['password', 'string', 'min'=>6],
+            ['password', 'string', 'min' => 6],
         ];
     }
 
     public function registration()
     {
-        if(!$this->validate())
-        {
+        if (!$this->validate()) {
             return null;
         }
         $user = new User();

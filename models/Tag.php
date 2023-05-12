@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
+
 /**
  * This is the model class for table "tag".
  *
@@ -19,41 +20,44 @@ class Tag extends \yii\db\ActiveRecord
      */
 
 
-    public static function findTagWeights($limit=20)
+    public static function findTagWeights($limit = 20)
     {
         $models = Tag::find()->orderBy(['frequency' => SORT_DESC])->all();
 
         $total = 0;
-        foreach($models as $model)
+        foreach ($models as $model)
             $total += $model->frequency;
 
         $tags = [];
-        if($total>0)
-        {
-            foreach($models as $model)
-                $tags[$model->name] = 8 + (int)(16*$model->frequency/($total+10));
+        if ($total > 0) {
+            foreach ($models as $model)
+                $tags[$model->name] = 8 + (int)(16 * $model->frequency / ($total + 10));
             ksort($tags);
         }
         return $tags;
     }
+
     public static function updateFrequencyOnDelete($oldTags)
     {
         $oldTags = self::string2array($oldTags);
         self::removeTags($oldTags);
     }
+
     public static function string2array($tags)
     {
-        return preg_split('/\s*,\s*/',trim((string)$tags),-1,PREG_SPLIT_NO_EMPTY);
+        return preg_split('/\s*,\s*/', trim((string)$tags), -1, PREG_SPLIT_NO_EMPTY);
     }
 
     public static function array2string($tags)
     {
-        return implode(',',$tags);
+        return implode(',', $tags);
     }
+
     public static function tableName()
     {
         return 'tag';
     }
+
     public static function updateFrequency($oldTags, $newTags)
     {
         $oldTags = self::string2array($oldTags);
@@ -64,12 +68,10 @@ class Tag extends \yii\db\ActiveRecord
 
     public static function addTags($tags)
     {
-        Tag::updateAllCounters(['frequency' => 1], 'name in ("' . implode ( '"," ', $tags) . '")');
+        Tag::updateAllCounters(['frequency' => 1], 'name in ("' . implode('"," ', $tags) . '")');
 
-        foreach($tags as $name)
-        {
-            if(!Tag::findOne(['name' => $name,]))
-            {
+        foreach ($tags as $name) {
+            if (!Tag::findOne(['name' => $name,])) {
                 $tag = new Tag;
                 $tag->name = $name;
                 $tag->frequency = 1;
@@ -80,13 +82,12 @@ class Tag extends \yii\db\ActiveRecord
 
     public static function removeTags($tags)
     {
-        if(empty($tags))
+        if (empty($tags))
             return;
 
-        Tag::updateAllCounters(['frequency' => 1], 'name in ("' . implode ( '"," ', $tags) . '")');
+        Tag::updateAllCounters(['frequency' => 1], 'name in ("' . implode('"," ', $tags) . '")');
         Tag::deleteAll('frequency <= 0');
     }
-
 
 
     /**

@@ -8,6 +8,7 @@ use yii\behaviors\AttributeBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
+
 /**
  * This is the model class for table "post".
  *
@@ -23,9 +24,10 @@ use yii\behaviors\BlameableBehavior;
 class Post extends \yii\db\ActiveRecord
 {
     private $_oldTags;
-    const STATUS_DRAFT=1;
-    const STATUS_PUBLISHED=2;
-    const STATUS_ARCHIVED=3;
+    const STATUS_DRAFT = 1;
+    const STATUS_PUBLISHED = 2;
+    const STATUS_ARCHIVED = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -39,12 +41,12 @@ class Post extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['update_time'],
                 ],
             ],
-                [
-                    'class' => BlameableBehavior::className(),
-                    'createdByAttribute' => 'author_id',
-                    'updatedByAttribute' => 'author_id',
-                ],
-            ];
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'author_id',
+                'updatedByAttribute' => 'author_id',
+            ],
+        ];
     }
 
     public static function tableName()
@@ -59,54 +61,58 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'content', 'status'], 'required'],
-            ['title','string','max'=>128],
-            ['status','in', 'range'=>[1,2,3]],
-            ['tags', 'match', 'pattern'=>'/^[\w\s,]+$/',
-                'message'=>'В тегах можно использовать только буквы.'],
-            ['tags', function($attribute,$params){
-                $this->tags=Tag::array2string(array_unique(Tag::string2array($this->tags)));
+            ['title', 'string', 'max' => 128],
+            ['status', 'in', 'range' => [1, 2, 3]],
+            ['tags', 'match', 'pattern' => '/^[\w\s,]+$/',
+                'message' => 'В тегах можно использовать только буквы.'],
+            ['tags', function ($attribute, $params) {
+                $this->tags = Tag::array2string(array_unique(Tag::string2array($this->tags)));
             }],
         ];
     }
+
     public function getAuthor()
     {
         return $this->hasOne(User::class, ['id' => 'author_id']);
     }
+
     public function getUrl()
     {
-        return Yii::$app->urlManager->createUrl([ 'post/view',
-            'id'=>$this->id,
-            'title'=>$this->title]);
+        return Yii::$app->urlManager->createUrl(['post/view',
+            'id' => $this->id,
+            'title' => $this->title]);
     }
+
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['post_id' => 'id'])
-            ->where('status = '. Comment::STATUS_APPROVED)
+            ->where('status = ' . Comment::STATUS_APPROVED)
             ->orderBy('create_time DESC');
     }
 
     public function getCommentCount()
     {
         return $this->hasMany(Comment::className(),
-            ['post_id' => 'id'])->where(['status'=>Comment::STATUS_APPROVED])->count();
+            ['post_id' => 'id'])->where(['status' => Comment::STATUS_APPROVED])->count();
     }
 
     public function getAllCommentCount()
     {
         return $this->hasMany(Comment::className(),
-            ['post_id' => 'id'])->where(['status'=>Comment::STATUS_APPROVED])->count();
+            ['post_id' => 'id'])->where(['status' => Comment::STATUS_APPROVED])->count();
     }
+
     public function addComment($comment)
     {
-        $comment->status=Comment::STATUS_APPROVED;
-        $comment->post_id=$this->id;
+        $comment->status = Comment::STATUS_APPROVED;
+        $comment->post_id = $this->id;
         return $comment->save();
     }
-    public function normalizeTags($attribute,$params)
+
+    public function normalizeTags($attribute, $params)
     {
         $this->tags = Tag::array2string(array_unique(array_map('trim', Tag::string2array($this->tags))));
     }
-
 
 
     public function afterFind()
@@ -114,6 +120,7 @@ class Post extends \yii\db\ActiveRecord
         parent::afterFind();
         $this->_oldTags = $this->tags;
     }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
@@ -122,8 +129,7 @@ class Post extends \yii\db\ActiveRecord
     }
 
 
-
-        public function attributeLabels()
+    public function attributeLabels()
     {
         return [
             'id' => 'ID',

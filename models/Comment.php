@@ -23,8 +23,9 @@ use yii\behaviors\BlameableBehavior;
  */
 class Comment extends \yii\db\ActiveRecord
 {
-    const STATUS_PENDING=1;
-    const STATUS_APPROVED=2;
+    const STATUS_PENDING = 1;
+    const STATUS_APPROVED = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -32,7 +33,9 @@ class Comment extends \yii\db\ActiveRecord
     {
         return 'comment';
     }
-    public function behaviors(){
+
+    public function behaviors()
+    {
         return [
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
@@ -42,6 +45,7 @@ class Comment extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -50,28 +54,32 @@ class Comment extends \yii\db\ActiveRecord
         return [
             [['content', 'author', 'email'], 'required'],
             [['author', 'email', 'url'], 'string', 'max' => 128],
-            ['email','email'],
+            ['email', 'email'],
             [['content'], 'string'],
-            ['url','url'],
+            ['url', 'url'],
             [['status', 'create_time', 'post_id'], 'integer'],
         ];
     }
-    public static function findRecentComments($limit=3)
+
+    public static function findRecentComments($limit = 3)
     {
-        return static::find()->where('status='.self::STATUS_APPROVED)
+        return static::find()->where('status=' . self::STATUS_APPROVED)
             ->orderBy('create_time DESC')
             ->limit($limit)
             ->with('post')->all();
     }
+
     public function approve()
     {
-        $this->status=Comment::STATUS_APPROVED;
+        $this->status = Comment::STATUS_APPROVED;
         $this->update(array('status'));
     }
+
     public function getUrl()
     {
         return $this->url;
     }
+
     /**
      * {@inheritdoc}
      */
