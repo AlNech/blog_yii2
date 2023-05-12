@@ -36,8 +36,8 @@ class SiteController extends Controller
                         'actions' => ['logout'],
                         'roles' => ['@'],
                     ],
-            ],
                 ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -111,9 +111,9 @@ class SiteController extends Controller
         }
 
         $model = new RegistrationForm();
-        if ($model->load(Yii::$app->request->post()) ) {
-            if ($user = $model->registration()){
-                if (Yii::$app->getUser()->login($user)){
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->registration()) {
+                if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
                 }
             }

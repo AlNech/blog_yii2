@@ -19,7 +19,7 @@ class m230304_135738_create_user_table extends Migration
             'password' => $this->string(),
             'isAdmin' => $this->integer()->defaultValue(0),
             'authKey' => $this->string()->null(),
-        ],'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci');
+        ], 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci');
 
 
     }

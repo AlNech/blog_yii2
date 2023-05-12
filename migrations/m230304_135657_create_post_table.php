@@ -15,7 +15,7 @@ class m230304_135657_create_post_table extends Migration
         $this->createTable('{{%post}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(128)->notNull(),
-            'content'=>$this->text()->notNull(),
+            'content' => $this->text()->notNull(),
             'tags' => $this->text(),
             'status' => $this->integer()->notNull(),
             'create_time' => $this->integer(),
@@ -23,15 +23,6 @@ class m230304_135657_create_post_table extends Migration
             'author_id' => $this->integer()->notNull(),
         ], 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci');
 
-        $this->addForeignKey
-        (
-            'author_id',
-            'post',
-            'author_id',
-            'user',
-            'id',
-            'CASCADE'
-        );
 
     }
 
