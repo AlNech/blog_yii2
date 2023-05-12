@@ -18,6 +18,7 @@ class m230304_135657_create_post_table extends Migration
             'content' => $this->text()->notNull(),
             'tags' => $this->text(),
             'status' => $this->integer()->notNull(),
+            'img' => $this->string(),
             'create_time' => $this->integer(),
             'update_time' => $this->integer(),
             'author_id' => $this->integer()->notNull(),

@@ -14,6 +14,22 @@ use \yii\helpers\Html;
         echo $post->content;
         ?>
     <p>
+
+
+        <!--Open img if it is existence-->
+    <div class="img mt-3 mb-4">
+        <?php
+        if ($post->img != null) {
+            echo Html::img(Yii::getAlias('@web') . '/uploads/' . $post->img,
+                [
+                    'alt' => 'Изображение города',
+                    'style' => 'height: 300px; width:500px'
+
+                ]);
+        }
+        ?>
+    </div>
+
     <div class="mb-5">
         <p>
             <strong>Tags:</strong>

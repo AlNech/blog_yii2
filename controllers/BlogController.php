@@ -21,7 +21,7 @@ class BlogController extends Controller
     public function actionIndex()
     {
 
-        $posts = Post::find()->andWhere(['status' => 2])->all();
+        $posts = Post::find()->andWhere(['status' => Post::STATUS_PUBLISHED])->all();
 
 
         return $this->render('all', ['posts' => $posts]);

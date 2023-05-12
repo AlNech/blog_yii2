@@ -65,6 +65,7 @@ class Post extends \yii\db\ActiveRecord
             ['status', 'in', 'range' => [1, 2, 3]],
             ['tags', 'match', 'pattern' => '/^[\w\s,]+$/',
                 'message' => 'В тегах можно использовать только буквы.'],
+            [['img'], 'string', 'max' => 255],
             ['tags', function ($attribute, $params) {
                 $this->tags = Tag::array2string(array_unique(Tag::string2array($this->tags)));
             }],
@@ -107,6 +108,12 @@ class Post extends \yii\db\ActiveRecord
         $comment->status = Comment::STATUS_APPROVED;
         $comment->post_id = $this->id;
         return $comment->save();
+    }
+
+    public function saveImage($filename)
+    {
+        $this->img = $filename;
+        $this->save(false);
     }
 
     public function normalizeTags($attribute, $params)

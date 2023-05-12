@@ -4,10 +4,13 @@ namespace app\modules\admin\controllers;
 
 use app\models\Post;
 use app\models\PostSearch;
+use app\models\ImageUpload;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -64,8 +67,27 @@ class PostController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
 
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
+    public function actionSetImage($id): string
+    {
+        $model = new ImageUpload;
 
+        if (Yii::$app->request->isPost) {
+            $post = $this->findModel($id);
+            //Get filename
+            $file = UploadedFile::getInstance($model, 'img');
+
+            $post->saveImage($model->uploadFile($file, $post->img));
+
+        }
+        return $this->render('img', ['model' => $model]);
+    }
 
     /**
      * Creates a new Post model.
@@ -78,7 +100,7 @@ class PostController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['post/']);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -88,7 +110,9 @@ class PostController extends Controller
             'model' => $model,
         ]);
     }
-    public function actionSetTags($id) {
+
+    public function actionSetTags($id)
+    {
 
         $post = $this->findModel($id);
 
@@ -108,6 +132,7 @@ class PostController extends Controller
             'tags' => $tags,
         ]);
     }
+
     /**
      * Updates an existing Post model.
      * If update is successful, the browser will be redirected to the 'view' page.
