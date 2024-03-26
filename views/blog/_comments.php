@@ -12,10 +12,12 @@ foreach ($comments as $comment): ?>
             <div class="col-md-7 border border-success">
                 <strong class="h5"><?php echo $comment->author; ?>
                     <span>
+
                         <?php echo Html::a("link #{$comment->id}", $comment->getUrl(), [
                             'class' => 'cid',
                             'title' => 'Permalink to this comment!',
-                        ]); ?>
+                        ]);
+                        ?>
 
                     </span>
                 </strong>

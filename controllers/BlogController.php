@@ -29,7 +29,8 @@ class BlogController extends Controller
 
     public function actionTagSearch()
     {
-        $posts = Post::find()->where(['tags' => $this->request->queryParams])->all();
+        $queryParams = $this->request->queryParams;
+        $posts = Post::find()->where(['tags' => $queryParams['tags']])->all();
 
         return $this->render('all', [
             'posts' => $posts,
