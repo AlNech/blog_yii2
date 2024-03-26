@@ -70,16 +70,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = User::find()->where(['name' => 'admin'])->one();
-        if (empty($model)) {
-            $user = new User();
-            $user->name = 'admin';
-            $user->isAdmin = 1;
-            $user->email = 'admin@yoursite.ru';
-            $user->HashPassword('admin');
-            $user->save();
-        }
-
         return $this->render('index');
     }
 

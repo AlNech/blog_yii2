@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Post;
 use app\models\Comment;
+use app\models\PostSearch;
+use app\models\TagSearch;
 use app\models\User;
 use app\models\RegistrationForm;
 use Yii;
@@ -20,12 +22,20 @@ class BlogController extends Controller
 
     public function actionIndex()
     {
-
         $posts = Post::find()->andWhere(['status' => Post::STATUS_PUBLISHED])->all();
-
 
         return $this->render('all', ['posts' => $posts]);
     }
+
+    public function actionTagSearch()
+    {
+        $posts = Post::find()->where(['tags' => $this->request->queryParams])->all();
+
+        return $this->render('all', [
+            'posts' => $posts,
+        ]);
+    }
+
 
     public function actionOne($id)
     {

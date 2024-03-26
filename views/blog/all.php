@@ -11,7 +11,6 @@ use yii\helpers\Html;
     <div class="col-md-5 border border-dark p-2">
         <p>Tags:</p>
         <?= TagCloud::widget([
-
             'title' => '<i class="icon-st"></i>',
             'maxTags' => 5,
         ]) ?>

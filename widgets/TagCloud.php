@@ -26,7 +26,7 @@ class TagCloud extends Widget
         $tags = Tag::findTagWeights();
         $str = '';
         foreach ($tags as $tag => $weight) {
-            $link = Html::a(Html::encode($tag));
+            $link = Html::a(Html::encode($tag), 'blog/tag-search/?tags=' . $tag);
             $str .= Html::tag('span', $link, [
                     'class' => 'tag',
                     'style' => "font-size:{$weight}pt",
